@@ -1,33 +1,3 @@
-# 🧩 CatLib Project (SWP391 - Java Web Application)
-
-## 📖 Giới thiệu
-CatLib là dự án web được phát triển bằng **Java Servlet/JSP**, theo mô hình MVC, nhằm quản lý thư viện sách điện tử.  
-Dự án được thực hiện bởi nhóm sinh viên Kỹ Thuật Phần Mềm – môn **SWP391**.
-
----
-
-## 👥 Thành viên nhóm
-
-| Vai trò | Họ và tên | Tài khoản GitHub |
-|----------|------------|------------------|
-| 👑 Leader | [Tên Leader] | [github.com/ten-leader] |
-| 💻 Developer 1 | [Tên thành viên] | [github.com/ten-member1] |
-| 💻 Developer 2 | [Tên thành viên] | [github.com/ten-member2] |
-| 💻 Developer 3 | [Tên thành viên] | [github.com/ten-member3] |
-
----
-
-## ⚙️ Công nghệ sử dụng
-
-- **Ngôn ngữ:** Java 17  
-- **Backend:** Servlet/JSP, JDBC  
-- **Frontend:** HTML5, CSS3, Bootstrap  
-- **CSDL:** MySQL  
-- **IDE:** IntelliJ IDEA / NetBeans  
-- **Server:** Apache Tomcat 10  
-
----
-
 ## 🧰 Trước khi bắt đầu (áp dụng cho tất cả thành viên)
 
 ### 1️⃣ Cài đặt môi trường
@@ -40,3 +10,33 @@ Dự án được thực hiện bởi nhóm sinh viên Kỹ Thuật Phần Mềm
 ```bash
 git clone https://github.com/<username>/<repo-name>.git
 cd <repo-name>
+
+### 3️⃣ Cập nhật code mới nhất
+git pull origin main
+
+### 4️⃣ Tạo branch riêng để làm việc
+git checkout -b feature/<tên-tính-năng>
+
+### 5️⃣ Commit và Push
+
+Sau khi hoàn thành một phần code:
+
+git add .
+git commit -m "Hoàn thành chức năng đăng nhập"
+git push origin feature/login
+
+### 6️⃣ Tạo Pull Request (PR)
+
+Vào GitHub → chọn Compare & pull request
+
+Viết mô tả chi tiết thay đổi
+
+Leader sẽ review và merge vào main
+
+Quy tắc	Mô tả
+1️⃣	Mỗi thành viên chỉ làm trên branch riêng
+2️⃣	Luôn git pull origin main trước khi bắt đầu làm việc
+3️⃣	Mỗi commit cần mô tả rõ ràng, ngắn gọn
+4️⃣	Không commit file target/, .idea/, *.iml hoặc file cấu hình cá nhân
+5️⃣	Leader là người duy nhất merge vào main
+6️⃣	Khi có xung đột, tự xử lý cẩn thận trước khi push lại
