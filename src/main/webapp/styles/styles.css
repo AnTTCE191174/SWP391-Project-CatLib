@@ -1,0 +1,45 @@
+html {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.smooth-transition {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-duration: 500ms;
+    transition-timing-function: ease-in-out;
+}
+
+.line-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.line-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.profile:hover div {
+    display: block !important;
+}
+
+.aspect-img {
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+}
+
+
+.animate-spin-manual {
+    animation: rotateLoop 2.5s linear infinite;
+}
+
+@keyframes rotateLoop {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
