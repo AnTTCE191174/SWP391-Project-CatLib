@@ -1,13 +1,9 @@
--- Trước khi Code mở file Project ra chạy 2 lệnh này trong Git Bash:
+-- Trước khi Code mở file Project ra chạy các lệnh này trong Git Bash:
 
 
 git checkout develop
 
 git pull origin develop
-
-
--- Mỗi thành viên làm việc trên branch riêng để tránh xung đột:
-
 
 git checkout -b feature/<tên-tính-năng>
 
@@ -32,3 +28,4 @@ git push origin feature/<tên-tính-năng>
 3. Viết mô tả chi tiết thay đổi
   
 4. Gửi yêu cầu để Leader review và merge vào main
+
