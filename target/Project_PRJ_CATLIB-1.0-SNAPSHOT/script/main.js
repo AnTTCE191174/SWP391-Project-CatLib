@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                               >Actions</span
                                         >
                                         <a
-                                            href="${window.location.href}/detail?id=${book.bookId}"
+                                            href="${contextPath}/detail?id=${book.bookId}"
                                             class="bg-stone-500 hover:bg-stone-700 text-white font-bold py-1 px-2 border border-stone-500 rounded inline-block cursor-pointer"
                                             >
                                             Detail
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                             Edit
                                         </a>
                                         <a
-                                            href="${window.location.href}/admin/book-manager/delete?id=${book.bookId}"
+                                            href="${contextPath}/admin/book-manager/delete?id=${book.bookId}"
                                             class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded inline-block cursor-pointer"
                                             >
                                             Delete
@@ -120,7 +120,7 @@ const successModal = (id) => {
 };
 
 const openModalUpdate = (bookId) => {
-    fetch(`${window.location.href}/update?id=${bookId}`)
+    fetch(`${contextPath}/admin/book-manager/update?id=${bookId}`)
             .then(res => res.json())
             .then(data => {
                 const dialog = document.querySelector("#book");
@@ -143,10 +143,10 @@ const openModalUpdate = (bookId) => {
                 author.value = data.authorName;
                 stockQuantity.value = data.stockQuantity;
                 description.value = data.description;
-                imageURL.src = "/CatLib/image/" + data.urlImage;
+                imageURL.src = `${contextPath}/image/` + data.urlImage;
                 imageInput.value = data.urlImage;
                 btnAdd.textContent = 'Update';
-                form.action = window.location.href + '/update?id=' + bookId;
+                form.action = `${contextPath}/admin/book-manager/update?id=` + bookId;
 
             })
             .catch(err => console.error("Lỗi khi fetch:", err));
@@ -155,7 +155,7 @@ const openModalUpdate = (bookId) => {
 
 let dataObj;
 const getData = () => {
-    fetch(`${window.location.href}/get-book`)
+    fetch(`${contextPath}/admin/book-manager/get-book`)
             .then((res) => res.json())
             .then((data) => {
                 dataObj = data;
@@ -198,7 +198,7 @@ function confirmDel(id) {
 
     const result = confirm(`Are you want to delete this book?`);
     if (result) {
-        window.location.href = `${window.location.href}/delete?id=${id}`;
+        window.location.href = `${contextPath}/admin/book-manager/delete?id=${id}`;
     } else {
         event.preventDefault();
     }

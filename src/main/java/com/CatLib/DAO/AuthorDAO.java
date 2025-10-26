@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class AuthorDAO {
 
     public static List<Author> findAllAuthor(Connection conn) {
@@ -35,7 +34,7 @@ public class AuthorDAO {
             return list;
 
         } catch (SQLException ex) {
-            Logger.getLogger(BookDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }

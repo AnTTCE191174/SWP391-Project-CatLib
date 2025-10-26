@@ -30,7 +30,7 @@
                 <div class="text-center">
                     <p class="text-8xl font-bold text-[#5f899f] tracking-widest my-6 ">WELCOME <span class="uppercase line-1 overflow-hidden text-ellipsis whitespace-nowrap">${loginedUser.username}</span></p>
                 <form action="${pageContext.request.contextPath}/search" method="post">
-                    <input class="p-2 rounded-md w-1/3" type="text" name="search">
+                    <input class="p-2 rounded-md w-1/3 text-black" type="text" name="search"> 
                     <button class="bg-[#5f899f] text-white py-2 px-4 rounded-md hover:bg-[#668f9b]">Search</button>
                 </form>
             </div>

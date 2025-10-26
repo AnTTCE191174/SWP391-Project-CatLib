@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.mindrot.jbcrypt.BCrypt;
 
-
 public class UserDAO {
 
     public static User findUser(Connection conn, //
@@ -34,7 +33,7 @@ public class UserDAO {
                     String role = rs.getString("role");
                     boolean isActive = rs.getString("is_active").equals("1");
 
-                    User user = new User(userId, userName, password, fullName, role, isActive);
+                    User user = new User(userId, userName, null, fullName, role, isActive);
                     return user;
                 }
             }
@@ -111,8 +110,12 @@ public class UserDAO {
                 + "SELECT SCOPE_IDENTITY() AS NewUserID;";
         try {
             PreparedStatement pstm = conn.prepareStatement(sql);
+
+            // --- BĂM MẬT KHẨU TRƯỚC KHI LƯU ---
+            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12)); // (12 là độ mạnh, có thể 10-12)
+
             pstm.setString(1, userName);
-            pstm.setString(2, password);
+            pstm.setString(2, hashedPassword); // <--- LƯU MẬT KHẨU ĐÃ BĂM
             pstm.setString(3, email);
             pstm.setString(4, "user");
 

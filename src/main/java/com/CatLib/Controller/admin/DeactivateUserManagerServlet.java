@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 
-
 @WebServlet(urlPatterns = {"/admin/user-manager/deactivate"})
 public class DeactivateUserManagerServlet extends HttpServlet {
 
@@ -28,10 +27,12 @@ public class DeactivateUserManagerServlet extends HttpServlet {
         Connection conn = MyUtils.getStoredConnection(req);
         boolean isSuccess = UserDAO.activeUser(conn, id, isActive);
         HttpSession session = req.getSession();
+        String actionMessage = isActive ? "deactivated" : "activated";
+        // (Nếu đang active thì hành động là "deactivated", và ngược lại)
         if (isSuccess) {
-            session.setAttribute("active", "Users have been " + (isActive ? "actived" : "deativate") + " successfully");
+            session.setAttribute("active", "User has been " + actionMessage + " successfully");
         } else {
-            session.setAttribute("active", "Users have been " + (isActive ? "actived" : "deativate") + " unsuccessfully");
+            session.setAttribute("active", "User has been " + actionMessage + " unsuccessfully");
         }
         resp.sendRedirect(req.getContextPath() + "/admin/user-manager");
 

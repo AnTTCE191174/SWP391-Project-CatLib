@@ -51,9 +51,17 @@
                     <p>Overdue Fee:  <span class="text-neutral-500">10.000VND/day</span></p>
                 </div>
 
-                <div class="absolute bottom-0 right-0 bg-[#4ca6bf] dark:bg-neutral-400 rounded-tl-[3vw]">
-                    <a onclick="confirmBook(${book.bookId}, 'borrow')" class="block py-8 px-16 text-3xl text-white font-semibold tracking-wider dark:text-neutral-900 smooth-transition" href="${pageContext.request.contextPath}/user/borrow?id=${book.bookId}">Borrow now</a>
+                <div div class="absolute bottom-0 right-0 flex items-end">
+                    <div class="bg-gray-800 dark:bg-gray-200  rounded-t-lg ">
+                        <a class="block text-xl py-2 px-8 text-white  font-semibold smooth-transition  dark:text-neutral-900" href="${pageContext.request.contextPath}/comment?id=${book.bookId}"> Comment</a>
+                    </div>
+
+                    <div class=" bg-[#4ca6bf] dark:bg-neutral-400 rounded-tl-[3vw]">
+                        <a onclick="confirmBook(${book.bookId}, 'borrow')" class="block py-8 px-16 text-3xl text-white font-semibold tracking-wider dark:text-neutral-900 smooth-transition" href="${pageContext.request.contextPath}/user/borrow?id=${book.bookId}">Borrow now</a>
+                    </div>
                 </div>
+
+
             </c:if>
         </main>
 

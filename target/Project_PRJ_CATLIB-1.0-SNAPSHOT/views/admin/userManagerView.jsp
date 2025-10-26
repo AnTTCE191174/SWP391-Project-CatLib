@@ -20,6 +20,10 @@
                 darkMode: 'class'
             };
         </script>
+        <script>
+            // "Bơm" contextPath từ JSP sang biến JavaScript toàn cục
+            const contextPath = '${pageContext.request.contextPath}';
+        </script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/styles.css?v=<%= System.currentTimeMillis()%>"/>
     </head>
     <body
@@ -113,7 +117,7 @@
                                               >Actions</span
                                         >
                                         <a
-                                            href="/CatLib/admin/user-manager/order?id=${user.userId}"
+                                            href="${pageContext.request.contextPath}/admin/user-manager/order?id=${user.userId}"
                                             class="bg-stone-500 hover:bg-stone-700 text-white font-bold py-1 px-2 border border-stone-500 rounded inline-block cursor-pointer"
                                             >
                                             Book Orders
@@ -121,7 +125,7 @@
                                         <c:choose>
                                             <c:when test="${user.active}">
                                                 <a  
-                                                    href="/CatLib/admin/user-manager/deactivate?id=${user.userId}&isActive=true"
+                                                    href="${pageContext.request.contextPath}/admin/user-manager/deactivate?id=${user.userId}&isActive=true"
                                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded inline-block cursor-pointer"
                                                     >
                                                     Deactivate
@@ -129,7 +133,7 @@
                                             </c:when>
                                             <c:otherwise>
                                                 <a  
-                                                    href="/CatLib/admin/user-manager/deactivate?id=${user.userId}&isActive=false"
+                                                    href="${pageContext.request.contextPath}/admin/user-manager/deactivate?id=${user.userId}&isActive=false"
                                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded inline-block cursor-pointer"
                                                     >
                                                     Active

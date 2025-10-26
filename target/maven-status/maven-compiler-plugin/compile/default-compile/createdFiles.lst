@@ -1,12 +1,15 @@
 com\CatLib\Model\User.class
+com\CatLib\Controller\AddCommentServlet.class
 com\CatLib\Filter\CookieFilter.class
 com\CatLib\Ultis\AdminUltil.class
 com\CatLib\Controller\AboutUsServlet.class
 com\CatLib\DAO\OrderDAO.class
 com\CatLib\Ultis\DBUtils.class
 com\CatLib\Controller\admin\UpdateBookManagerServlet.class
+com\CatLib\DAO\CommentDAO.class
 com\CatLib\Model\Category.class
 com\CatLib\Conn\ConnectionUtils.class
+com\CatLib\Model\Comment.class
 com\CatLib\Controller\OrderServlet.class
 com\CatLib\DAO\BookDAO.class
 com\CatLib\Controller\admin\DeactivateUserManagerServlet.class
@@ -27,6 +30,7 @@ com\CatLib\Controller\HomeServlet.class
 com\CatLib\Model\Author.class
 com\CatLib\Controller\admin\UserManagerServlet.class
 com\CatLib\Filter\JDBCFilter.class
+com\CatLib\Controller\CommentServlet.class
 com\CatLib\Filter\UserFilter.class
 com\CatLib\Controller\admin\GetBookManagerServlet.class
 com\CatLib\DAO\CategoryDAO.class

@@ -19,8 +19,10 @@
             tailwind.config = {
                 darkMode: 'class'
             };
-
-
+        </script>
+        <script>
+            // "Bơm" contextPath từ JSP sang biến JavaScript toàn cục
+            const contextPath = '${pageContext.request.contextPath}';
         </script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/styles.css?v=<%= System.currentTimeMillis()%>"/>
     </head>
