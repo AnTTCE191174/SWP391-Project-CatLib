@@ -29,3 +29,14 @@ git push origin feature/<tên-tính-năng>
   
 4. Gửi yêu cầu để Leader review và merge vào main
 
+Nếu bạn đã test ổn định ở nhánh develop và muốn cập nhật lên main, làm như sau:
+
+# Chuyển sang nhánh main
+git checkout main
+
+# Cập nhật code mới nhất từ develop
+git merge develop
+
+# Push lên GitHub
+git push origin main
+
