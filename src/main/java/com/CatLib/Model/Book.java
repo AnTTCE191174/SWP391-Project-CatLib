@@ -50,7 +50,9 @@ public class Book {
         this.stockQuantity = stockQuantity;
         this.urlImage = urlImage;
     }
-
+    public Book(){
+        
+    }
     
   
 

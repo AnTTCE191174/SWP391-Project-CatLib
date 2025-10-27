@@ -116,10 +116,10 @@
                             </div>
                         </div>
                         <div class="relative px-6 z-10">
-                            <p class="text-2xl font-bold ">Kim Cheese</p>
+                            <p class="text-2xl font-bold ">Dương Nguyễn Kim Chi</p>
                             <p class="py-2"></p>
                             <p class="text-justify italic">
-                                <!--                                Trời Cần Thơ mưa dai như đỉa - Nhớ em nhiều anh có ỉa được đâu-->
+                            
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae
                                 eaque ipsa, facere sit recusandae deleniti.
                             </p>
@@ -168,7 +168,6 @@
                             <p class="text-2xl font-bold ">Lâm Hoàng Phúc</p>
                             <p class="py-2"></p>
                             <p class="text-justify italic">
-                                <!--Lọ Thánh Chí Tôn – kẻ đã lọ suốt thiên niên kỷ, đạt đến cảnh giới mà người đời chỉ dám mơ.-->
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae
                                 eaque ipsa, facere sit recusandae deleniti.
                             </p>

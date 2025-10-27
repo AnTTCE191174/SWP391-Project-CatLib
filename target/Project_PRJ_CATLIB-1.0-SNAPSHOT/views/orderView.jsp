@@ -5,6 +5,7 @@
 --%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -48,7 +49,27 @@
                 <c:forEach items="${orders}" var="order">
                     <div class="flex relative p-4 border-b border-neutral-400">
                         <div class="aspect-img bg-white p-2 mr-6 rounded-lg w-[12rem]">
-                            <img class="w-full h-full" src="${pageContext.request.contextPath}/image/${order.imageUrl}" alt="${order.title}" />
+                            <c:choose>
+                                <%-- Trường hợp 1: Link API (Bắt đầu bằng http) --%>
+                                <c:when test="${fn:startsWith(order.imageUrl, 'http')}">
+                                    <img class="w-full h-full object-cover" src="${order.imageUrl}" alt="${order.title}" />
+                                </c:when>
+
+                                <%-- Trường hợp 2: Link Local (Bắt đầu bằng image/ hoặc chỉ là tên file) --%>
+                                <c:otherwise>
+                                    <%-- Tạo đường dẫn local, giả sử file luôn nằm trong thư mục 'image' --%>
+                                    <c:set var="localImagePath" value="${order.imageUrl}"/>
+
+                                    <%-- Nếu đường dẫn chưa có tiền tố 'image/' thì thêm vào --%>
+                                    <c:if test="${!fn:startsWith(order.imageUrl, 'image/')}">
+                                        <c:set var="localImagePath" value="image/${order.imageUrl}"/>
+                                    </c:if>
+
+                                    <img class="w-full h-full object-cover" 
+                                         src="${pageContext.request.contextPath}/${localImagePath}" 
+                                         alt="${order.title}" />
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                         <div class="flex flex-col justify-between flex-1 text-gray-500 dark:text-gray-300">
                             <div>
@@ -127,6 +148,14 @@
                                                 href="${pageContext.request.contextPath}/admin/user-manager/action?id=${order.orderId}&userId=${order.userId}&action=returned"
                                                 class="text-center px-4 py-2 bg-green-700 text-white rounded border border-green-700 hover:bg-green-600"
                                                 >
+                                                Return
+                                            </a>
+                                        </div>
+                                    </c:when>
+                                    <c:when test="${order.status.toLowerCase()=='overdue'}"> 
+                                        <div>
+                                            <a href="${pageContext.request.contextPath}/admin/user-manager/action?id=${order.orderId}&userId=${order.userId}&action=returned"
+                                               class="text-center px-4 py-2 bg-orange-700 text-white rounded border border-orange-700 hover:bg-orange-600">
                                                 Return
                                             </a>
                                         </div>

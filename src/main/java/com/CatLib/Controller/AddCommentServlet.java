@@ -2,13 +2,11 @@ package com.CatLib.Controller;
 
 import com.CatLib.DAO.CommentDAO;
 import com.CatLib.Ultis.MyUtils;
-import com.CatLib.Model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 
@@ -17,66 +15,55 @@ public class AddCommentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        // --- LẤY USER TỪ SESSION (AN TOÀN) ---
-        HttpSession session = req.getSession(false); // Lấy session hiện có, không tạo mới
-        User loginedUser = MyUtils.getLoginedUser(session);
-
-        // --- KIỂM TRA ĐĂNG NHẬP ---
-        if (loginedUser == null) {
-            // Nếu chưa đăng nhập, chuyển về trang login hoặc trang sách
-            resp.sendRedirect(req.getContextPath() + "/login"); // Hoặc trang sách nếu muốn
-            return; // Dừng servlet
-        }
-
-        // --- Lấy userId từ đối tượng User đã đăng nhập ---
-        int userId = loginedUser.getUserId();
-
-        // --- Lấy các thông tin khác từ form ---
+        
         String bookIdStr = req.getParameter("bookId");
+        String userIdStr = req.getParameter("userId");
         String commentText = req.getParameter("commentText");
 
-        // --- URL chuyển hướng (vẫn giữ nguyên) ---
+        // Luôn chuyển hướng về trang comment, dù thành công hay thất bại
+        // Sửa: URL phải là "/comment" (giống servlet của bạn) chứ không phải "/add-comment"
         String redirectURL = req.getContextPath() + "/comment?id=" + bookIdStr;
 
         try {
-            // --- KIỂM TRA DỮ LIỆU ĐẦU VÀO (bỏ kiểm tra userIdStr rỗng) ---
-
-            // 1. Kiểm tra bookId có rỗng không
-            if (bookIdStr == null || bookIdStr.isEmpty()) {
-                System.out.println("AddCommentServlet Error: bookId bị rỗng.");
+            // --- KIỂM TRA DỮ LIỆU ĐẦU VÀO ---
+            
+            // 1. Kiểm tra userId và bookId có rỗng không
+            if (userIdStr == null || userIdStr.isEmpty() || bookIdStr == null || bookIdStr.isEmpty()) {
+                System.out.println("AddCommentServlet Error: userId hoặc bookId bị rỗng.");
                 resp.sendRedirect(redirectURL);
                 return; // Dừng lại
             }
-
-            // 2. Kiểm tra bình luận có rỗng không
+            
+            // 2. Kiểm tra bình luận có rỗng không (trim() để xóa khoảng trắng thừa)
             if (commentText == null || commentText.trim().isEmpty()) {
                 System.out.println("AddCommentServlet Info: Người dùng gửi bình luận rỗng.");
                 resp.sendRedirect(redirectURL);
-                return; // Dừng lại
+                return; // Dừng lại, không lưu bình luận rỗng
             }
 
             // --- XỬ LÝ DỮ LIỆU ---
+            
             int bookId = Integer.parseInt(bookIdStr);
-            // userId đã lấy an toàn từ session ở trên
+            int userId = Integer.parseInt(userIdStr);
 
             Connection conn = MyUtils.getStoredConnection(req);
 
             // 3. Gọi DAO để lưu vào database
-            CommentDAO.addNewComment(conn, bookId, userId, commentText.trim());
+            CommentDAO.addNewComment(conn, bookId, userId, commentText.trim()); // Dùng trim() để lưu text sạch
 
             // 4. Chuyển hướng người dùng TRỞ LẠI trang comment
             resp.sendRedirect(redirectURL);
 
         } catch (NumberFormatException e) {
-            // Lỗi parse bookIdStr
+            // Lỗi này xảy ra nếu Integer.parseInt(userIdStr) thất bại
             e.printStackTrace();
             System.out.println("AddCommentServlet Error: NumberFormatException - " + e.getMessage());
-            resp.sendRedirect(redirectURL);
-
+            resp.sendRedirect(redirectURL); // Vẫn chuyển hướng về trang cũ
+            
         } catch (Exception e) {
             e.printStackTrace();
-            resp.sendRedirect(redirectURL);
+            // Xử lý các lỗi khác (ví dụ: lỗi SQL)
+            resp.sendRedirect(redirectURL); // Vẫn chuyển hướng về trang cũ
         }
     }
 }

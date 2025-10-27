@@ -4,9 +4,6 @@
  */
 
 
-/* * Sửa lại: Hàm này chỉ chịu trách nhiệm NGĂN CHẶN nếu người dùng bấm "Cancel".
- * Nếu người dùng bấm "OK", nó không làm gì cả và để cho link href tự chạy.
- */
 function confirmBook(id, status) {
     let result;
     if (status === 'borrow') {
@@ -18,7 +15,9 @@ Overdue Fee: 10.000VND/day`);
         result = false;
     }
 
-    if (!result) { // Chỉ hành động nếu người dùng bấm "Cancel"
+    if (result) {
+        window.location.href = `${window.location.hostname}/user/${status}?id=${id}`;
+    } else {
         event.preventDefault();
     }
 }

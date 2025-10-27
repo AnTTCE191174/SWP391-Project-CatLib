@@ -17,6 +17,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class OrderDAO {
 
     public static List<OrderModel> findALlOrder(Connection conn, User user) {
@@ -59,39 +60,60 @@ public class OrderDAO {
 
     public static List<OrderModel> findOrderByStatus(Connection conn, String userId, String status) {
         String sql;
-        boolean hasStatus = (status != null && !status.isEmpty());
 
-        if (!hasStatus) {
+        if (status == null) {
             sql = "select o.OrderID, b.Title, a.authorName, b.Publisher, b.PublishDate, o.status, b.imageURL,\n"
-                    + " b.StockQuantity, o.OrderDate, o.ReturnDate from BookOrders o\n"
-                    + " join Book b on b.BookID = o.BookID\n"
-                    + " left join Book_Author BA on BA.BookID = b.BookID\n"
-                    + " left join Author a on a.AuthorID = BA.AuthorID\n"
-                    + " where o.UserId = ? \n"
-                    + " order by orderID desc";
+                    + "               b.StockQuantity, o.OrderDate, o.ReturnDate from BookOrders o\n"
+                    + "               join Book b on b.BookID = o.BookID\n"
+                    + "               left join Book_Author BA on BA.BookID = b.BookID\n"
+                    + "               left join Author a on a.AuthorID = BA.AuthorID\n"
+                    + "              where o.UserId = ? "
+                    + "              order by orderID desc";
         } else {
             sql = "select o.OrderID, b.Title, a.authorName, b.Publisher, b.PublishDate, o.status, b.imageURL,\n"
-                    + " b.StockQuantity, o.OrderDate, o.ReturnDate from BookOrders o\n"
-                    + " join Book b on b.BookID = o.BookID\n"
-                    + " left join Book_Author BA on BA.BookID = b.BookID\n"
-                    + " left join Author a on a.AuthorID = BA.AuthorID\n"
-                    + " where o.UserId = ? and o.status = ? \n" // <--- Sửa ở đây
-                    + " order by orderID desc";
+                    + "               b.StockQuantity, o.OrderDate, o.ReturnDate from BookOrders o\n"
+                    + "               join Book b on b.BookID = o.BookID\n"
+                    + "               left join Book_Author BA on BA.BookID = b.BookID\n"
+                    + "               left join Author a on a.AuthorID = BA.AuthorID\n"
+                    + "              where o.UserId = ? and o.status = \'" + status + "\'"
+                    + "              order by orderID desc";
         }
 
         PreparedStatement pstm;
         try {
             pstm = conn.prepareStatement(sql);
-            pstm.setString(1, userId); // Luôn set UserId
-
-            if (hasStatus) {
-                pstm.setString(2, status); // <--- Set tham số status an toàn
-            }
-
+            pstm.setString(1, userId);
             ResultSet rs = pstm.executeQuery();
             List<OrderModel> list = new ArrayList<>();
-            // ... (phần còn lại của code giữ nguyên)
-            // ...
+            while (rs.next()) {
+//            int id = Integer.parseInt(rs.getString("bookid"));
+                int orderId = rs.getInt("orderId");
+                String title = rs.getString("title");
+                String description = rs.getString("authorName");
+                String publisher = rs.getString("Publisher");
+                String publishDate = rs.getString("PublishDate");
+                Date orderDate = rs.getDate("OrderDate");
+                Date returnDate = rs.getDate("ReturnDate");
+                String statusLabel = rs.getString("status");
+                String url = rs.getString("imageURL");
+                long bill = 0;
+                if ("approved".equals(statusLabel) || "overdue".equals(statusLabel)) {
+                    LocalDate pastLocalDate = orderDate.toLocalDate();
+                    LocalDate currentDate = LocalDate.now();
+                    long daysPassed = ChronoUnit.DAYS.between(pastLocalDate, currentDate) + 1;
+                    if(daysPassed <= 14) {
+                        bill = daysPassed * 5000;
+                    } else {
+                        bill = (daysPassed - 14) * 10000 + (14 * 5000);
+                    }
+                }
+                OrderModel order = new OrderModel(orderId, title, description,
+                        publisher, publishDate, orderDate, returnDate, url, statusLabel);
+                order.setUserId(Integer.valueOf(userId));
+                order.setBill(bill);
+                list.add(order);
+            }
+            return list;
         } catch (SQLException e) {
             System.out.println(e.toString());
         }

@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 
+
 @WebServlet(urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
@@ -24,7 +25,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
+         HttpSession session = req.getSession(false);
         if (session != null) {
             String message = (String) session.getAttribute("message");
             if (message != null) {
@@ -61,14 +62,18 @@ public class LoginServlet extends HttpServlet {
             }
 
         }
+        // Trong trường hợp có lỗi,
+        // forward (chuyển hướng) tới /WEB-INF/views/login.jsp
         if (hasError) {
-            User userFailed = new User();
-            userFailed.setUsername(userName);
-            // KHÔNG setPassword
+            user = new User();
+            user.setUsername(userName);
+            user.setPassword(password);
 
+            // Lưu các thông tin vào request attribute trước khi forward.
             req.setAttribute("errorString", errorString);
-            req.setAttribute("user", userFailed); // Chỉ chứa username
+            req.setAttribute("user", user);
 
+            // Forward (Chuyển tiếp) tới trang /WEB-INF/views/login.jsp
             RequestDispatcher dispatcher //
                     = this.getServletContext().getRequestDispatcher("/views/loginView.jsp");
 

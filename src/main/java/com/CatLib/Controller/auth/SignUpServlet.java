@@ -63,6 +63,7 @@ public class SignUpServlet extends HttpServlet {
         if (hasError) {
             user = new User();
             user.setUsername(userName);
+            user.setPassword(password);
             // Lưu các thông tin vào request attribute trước khi forward.
             req.setAttribute("errorString", errorString);
             req.setAttribute("user", user);
@@ -79,11 +80,14 @@ public class SignUpServlet extends HttpServlet {
             int userId;
             Connection conn = MyUtils.getStoredConnection(req);
             
+            // băm password
+            String hashedPassWord = BCrypt.hashpw(password, BCrypt.gensalt(10));
+            
             // Tạo User trong DB
-            userId = UserDAO.createUser(conn, userName, password, email); // <-- Gửi 'password' gốc
+            userId = UserDAO.createUser(conn, userName, hashedPassWord, email);
             if (userId != -1) {
 
-                user = new User(userId, userName, null, email); // <--- Truyền 'null' vào vị trí password
+                user = new User(userId, userName, hashedPassWord, email);
                 HttpSession session = req.getSession();
                 MyUtils.storeLoginedUser(session, user);
                 resp.sendRedirect(req.getContextPath() + "/home");
