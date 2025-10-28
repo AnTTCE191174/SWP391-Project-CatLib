@@ -10,16 +10,14 @@ import java.util.List;
 public class CommentDAO {
 
     /**
-     * Phương thức này được gọi bởi CommentServlet
-     * Lấy tất cả comment (Đã sửa cho SQL SERVER)
+     * Lấy tất cả comment (Đã sửa để lấy cả CommentID)
      */
     public static List<Comment> findCommentsByBookId(Connection conn, int bookId) {
         
-        // Dùng CONVERT(varchar, ..., 103) thay vì DATE_FORMAT (103 = dd/mm/yyyy)
-        // Dùng Users(UserID) và Book(BookID) để khớp với file CatLib.sql
-        String sql = "SELECT u.username, c.commentText, CONVERT(varchar, c.createdAt, 103) AS commentDate "
+        // SỬA Ở ĐÂY: Thêm "c.CommentID" vào câu SELECT
+        String sql = "SELECT c.CommentID, u.username, c.commentText, CONVERT(varchar, c.createdAt, 103) AS commentDate "
                    + "FROM Comments c "
-                   + "JOIN Users u ON c.userId = u.UserID " // Khớp với 'UserID' của bảng Users
+                   + "JOIN Users u ON c.userId = u.UserID "
                    + "WHERE c.bookId = ? "
                    + "ORDER BY c.createdAt DESC"; 
 
@@ -31,11 +29,14 @@ public class CommentDAO {
             
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
+                    // SỬA Ở ĐÂY: Lấy thêm "CommentID"
+                    int commentId = rs.getInt("CommentID"); 
                     String username = rs.getString("username");
                     String text = rs.getString("commentText");
                     String date = rs.getString("commentDate");
                     
-                    Comment comment = new Comment(username, text, date);
+                    // SỬA Ở ĐÂY: Truyền ID vào constructor (Bạn sẽ phải sửa file Comment.java)
+                    Comment comment = new Comment(commentId, username, text, date);
                     commentList.add(comment);
                 }
             }
@@ -47,12 +48,10 @@ public class CommentDAO {
     }
 
     /**
-     * Phương thức này được gọi bởi AddCommentServlet
-     * Thêm comment mới (Đã sửa cho SQL SERVER)
+     * Thêm comment mới
      */
     public static void addNewComment(Connection conn, int bookId, int userId, String commentText) {
         
-        // Dùng GETDATE() thay vì NOW()
         String sql = "INSERT INTO Comments (bookId, userId, commentText, createdAt) "
                    + "VALUES (?, ?, ?, GETDATE())"; 
 
@@ -63,6 +62,25 @@ public class CommentDAO {
             ps.setString(3, commentText);
             
             ps.executeUpdate(); // Thực thi lệnh INSERT
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * PHƯƠNG THỨC MỚI: Dùng cho DeleteCommentServlet
+     * Xoá một comment dựa trên ID
+     */
+    public static void deleteCommentById(Connection conn, int commentId) {
+        
+        // (Giả sử cột khoá chính của bạn là "CommentID")
+        String sql = "DELETE FROM Comments WHERE CommentID = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, commentId);
+            ps.executeUpdate(); // Thực thi lệnh DELETE
             
         } catch (Exception e) {
             e.printStackTrace();

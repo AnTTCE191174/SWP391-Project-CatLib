@@ -35,6 +35,7 @@ com\CatLib\Ultis\MyUtils.class
 com\CatLib\Controller\admin\BookManagerServlet.class
 com\CatLib\Model\Book.class
 com\CatLib\Controller\HomeServlet.class
+com\CatLib\Controller\admin\DeleteCommentServlet.class
 com\CatLib\Model\Author.class
 com\CatLib\Filter\JDBCFilter.class
 com\CatLib\Controller\CommentServlet.class
